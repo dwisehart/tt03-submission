@@ -2,6 +2,7 @@
 .idea
 .vscode
 *.vcd
+*.gtkw
 runs
 src/sim_build
 src/__pycache__/
