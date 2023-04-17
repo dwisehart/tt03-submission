@@ -19,12 +19,12 @@
 
    always @( posedge i_clk )
      if( i_rst ) begin
-        r_ones          <= 5'd0;
-        r_tens          <= 5'd0;
+        r_ones          <= 'd0;
+        r_tens          <= 'd0;
      end
      else if( r_ones == 'b10000 ) begin
         r_tens          <= f_grey( r_tens );
-        r_ones          <= 5'd0;
+        r_ones          <= 'd0;
      end
      else begin
         r_tens          <= r_tens;
@@ -33,16 +33,16 @@
 
    function [4:0] f_grey( input [4:0] f_in );
       case( f_in )
-        5'b00000: return 5'b00001;  // 0
-        5'b00001: return 5'b00011;  // 1
-        5'b00011: return 5'b00010;  // 2
-        5'b00010: return 5'b00110;  // 3
-        5'b00110: return 5'b00100;  // 4
-        5'b00100: return 5'b01100;  // 5
-        5'b01100: return 5'b01000;  // 6
-        5'b01000: return 5'b11000;  // 7
-        5'b11000: return 5'b10000;  // 8
-        default:  return 5'b00000;  // 9 or anything else
+        'b00000: f_grey  = 'b00001;  // 0
+        'b00001: f_grey  = 'b00011;  // 1
+        'b00011: f_grey  = 'b00010;  // 2
+        'b00010: f_grey  = 'b00110;  // 3
+        'b00110: f_grey  = 'b00100;  // 4
+        'b00100: f_grey  = 'b01100;  // 5
+        'b01100: f_grey  = 'b01000;  // 6
+        'b01000: f_grey  = 'b11000;  // 7
+        'b11000: f_grey  = 'b10000;  // 8
+        default: f_grey  = 'b00000;  // 9 or anything else
       endcase
    endfunction
 
