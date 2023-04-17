@@ -1,38 +1,69 @@
---- 
+---
 # TinyTapeout project information
 project:
   wokwi_id:    0        # If using wokwi, set this to your project's ID
 
-# If using an HDL, set wokwi_id as 0 and uncomment and list your source files here. 
-# Source files must be in ./src and you must list each source file separately
-#  source_files:        
-#    - counter.v
-#    - decoder.v
-#  top_module:  "seven_segment_seconds"      # put the name of your top module here, make it unique by prepending your github username
+  source_files:
+    - grey.v
+  top_module:  "dwisehart_top"
 
 # Keep a track of the submission yaml
 yaml_version: 3.0
 
-# As everyone will have access to all designs, try to make it easy for someone new to your design to know what
-# it does and how to operate it. This info will be automatically collected and used to make a datasheet for the chip.
-#
-# Here is a great example: https://github.com/davidsiaw/tt02-davidsiaw-stackcalc/blob/38c5647f83aad2aec675d566aa3d67b98f0aac81/info.yaml
-documentation: 
-  author:       ""      # Your name
-  title:        ""      # Project title
-  language:     "Wokwi" # other examples include Verilog, Amaranth, VHDL, etc
-  description:  ""      # Short description of what your project does
+documentation:
+  author:       "Daniel Wisehart"
+  title:        "Base-10 grey counter from 0-99"
+  language:     "Verilog"
+  description:  "Change only one output bit per count, but count with decimal digits instead of the usual reverse bit order grey counter."
 
 # Longer description of how the project works. You can use standard markdown format.
   how_it_works: |
-      Explain how your project works
+      Like a standard grey counter, this counter will only change one bit per time, but the bits are grouped into
+      decimal digits.  (This also makes for easy bits -> decimal decoding for the interested.)
 
-# Instructions on how someone could test your project, include things like what buttons do what and how to set the clock if needed
+      Each decimal digit uses five bits.  As with all grey counters, you have to scan the counter output fast enough
+      that either the value is the same or the value has increased by one.  If you scan too slowly and the value
+      changes by 2 or more, then the grey counter can give you false indications: only a single bit, at most, should
+      change between scans.
+
+      As an exampe of how this grey counter works, this is the progression from decimal 0 to 12:
+        10's  1's count
+       00000 00000    0
+       00000 00001    1
+       00000 00011    2
+       00000 00010    3
+       00000 00110    4
+       00000 00100    5
+       00000 01100    6
+       00000 01000    7
+       00000 11000    8
+       00000 10000    9
+       00001 00000   10
+       00001 00001   11
+       00001 00011   12
+
+      But wait, you say, at decimal value 10, two bits change at once.  This is where your deciphering of the bits
+      has to be smart.
+
+      The bits in the 10's digit change 10x more slowly than the 1's digit.  So when you decipher the combined
+      value, you look first at the 10's digit.  If the 10's digit has changed, then you can ignore the 1's digit,
+      because you know the combined value is 10 or 20 or ... 90 or back to 00.  If the 10's digit has not changed,
+      then you look at both digits to decipher the combined value: 1 or 2 or ... 98 or 99.
+
+      Some work has been done to insure that the 10's digit changes before the 1's digit, but if the physical routes
+      between the outputs of this circuit and the inputs of your scanning circuit make the 10's output bits arrive
+      later, it is possible that you will receive a 1's bit that changes from 9 ('b10000) to 0 ('b00000) even though
+      you have not yet seen the 10's value change.  That is fine.  You know that the 10's digit has rolled over, and
+      you update your internal copy of the 10's digit so that on the next clock cycle you do not detect a change in
+      the 10's digit.
+
+# Instructions on how someone could test your project
   how_to_test:  |
-      Explain how to test your project
+      After reset goes low, the counter should increase by one with each rising edge of the clock.
+      You are encouraged to try different clock rates.
 
 # A description of what the inputs do
-  inputs:               
+  inputs:
     - clock
     - reset
     - none
@@ -41,21 +72,22 @@ documentation:
     - none
     - none
     - none
+
 # A description of what the outputs do
   outputs:
-    - segment a
-    - segment b
-    - segment c
-    - segment d
-    - segment e
-    - segment f
-    - segment g
-    - dot
+    - segment a ( 1's bit ....X)
+    - segment b ( 1's bit ...X.)
+    - segment c ( 1's bit ..X..)
+    - segment d ( 1's bit .X...)
+    - segment e ( 1's bit X....)
+    - segment f (10's bit ....X)
+    - segment g (10's bit ...X.)
+    -           (10's bit ..X..)
 
 # The following fields are optional
-  tag:          ""      # comma separated list of tags: test encryption, experiment, clock, animation, utility, industrial, pwm, fpga, alu, microprocessor, risc, riscv, sensor, signal generator, fft, filter, music, bcd, sound, serial, timer, random number generator, calculator, decoder, counter, puzzle, multiplier, game, oscillator,
-  external_hw:  ""      # Describe any external hardware needed
-  discord:      ""      # Your discord handle, used for communication and automatically assigning tapeout role after a submission
-  doc_link:     ""      # URL to longer form documentation, eg the README.md in your repository
-  clock_hz:     0       # Clock frequency in Hz (if required)
-  picture:      ""      # relative path to a picture in your repository
+  tag:          "counter, grey, test"
+  external_hw:  ""
+  discord:      "DanielWyo"
+  doc_link:     ""
+  clock_hz:     any
+  picture:      ""
