@@ -1,10 +1,12 @@
 `default_nettype none
+`timescale 1ns/1ps
 
-module dwisehart_top #( parameter MAX_COUNT = 1000 )
-(
- input [7:0]  io_in,
- output [7:0] io_out
-);
+  module grey
+  (
+   input [7:0]  io_in,
+   output [7:0] io_out,
+   output [1:0] ext_out
+  );
 
    wire       i_clk        = io_in[0];
    wire       i_rst        = io_in[1];
@@ -13,6 +15,7 @@ module dwisehart_top #( parameter MAX_COUNT = 1000 )
    assign     io_out[4:0]  = r_ones;
    reg [4:0]  r_tens;
    assign     io_out[7:5]  = r_tens[2:0];
+   assign     ext_out      = r_tens[4:3];
 
    always @( posedge i_clk )
      if( i_rst ) begin
