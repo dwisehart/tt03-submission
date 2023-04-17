@@ -87,7 +87,7 @@ documentation:
 # The following fields are optional
   tag:          "counter, grey, test"
   external_hw:  ""
-  discord:      "DanielWyo#2929"
+  discord:      "danielwyo#2929"
   doc_link:     ""
   clock_hz:     any
   picture:      ""
