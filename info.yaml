@@ -13,7 +13,7 @@ yaml_version: 3.0
 
 documentation:
   author:       "Daniel Wisehart"
-  title:        "Base-10 grey counter from 0-99"
+  title:        "Base-10 grey counter from 0-9999"
   language:     "Verilog"
   description:  "Change only one output bit per count, but count with decimal digits instead of the usual reverse bit order grey counter."
 
@@ -22,10 +22,10 @@ documentation:
       Like a standard grey counter, this counter will only change one bit per time, but the bits are grouped into
       decimal digits.  (This also makes for easy bits -> decimal decoding for the interested.)
 
-      Each decimal digit uses five bits.  As with all grey counters, you have to scan the counter output fast enough
-      that either the value is the same or the value has increased by one.  If you scan too slowly and the value
-      changes by 2 or more, then the grey counter can give you false indications: only a single bit, at most, should
-      change between scans.
+      Each decimal digit uses five bits.  As with all grey counters, you have to scan the counter output fast
+      enough that either the value is the same or the value has increased by one.  If you scan too slowly and the
+      value changes by 2 or more, then the grey counter can give you false indications: only a single bit, at most,
+      should change between scans.
 
       As an exampe of how this grey counter works, this is the progression from decimal 0 to 12:
         10's  1's count
@@ -51,17 +51,23 @@ documentation:
       because you know the combined value is 10 or 20 or ... 90 or back to 00.  If the 10's digit has not changed,
       then you look at both digits to decipher the combined value: 1 or 2 or ... 98 or 99.
 
-      Some work has been done to insure that the 10's digit changes before the 1's digit, but if the physical routes
-      between the outputs of this circuit and the inputs of your scanning circuit make the 10's output bits arrive
-      later, it is possible that you will receive a 1's bit that changes from 9 ('b10000) to 0 ('b00000) even though
-      you have not yet seen the 10's value change.  That is fine.  You know that the 10's digit has rolled over, and
-      you update your internal copy of the 10's digit so that on the next clock cycle you do not detect a change in
-      the 10's digit.
+      Some work has been done to insure that the 10's digit changes before the 1's digit, but if the physical
+      routes between the outputs of this circuit and the inputs of your scanning circuit make the 10's output bits
+      arrive later, it is possible that you will receive a 1's bit that changes from 9 ('b10000) to 0 ('b00000)
+      even though you have not yet seen the 10's value change.  That is fine.  You know that the 10's digit has
+      rolled over, and you update your internal copy of the 10's digit so that on the next clock cycle you do not
+      detect a change in the 10's digit.
+
+      Note that in this implementation, the hardware--which only has 8 outputs--outputs the thousands digit and the
+      three fastest changing bits of the ones digit.  To see all bits flip, you have to run this in the simulator
+      or with cocotb.
 
 # Instructions on how someone could test your project
   how_to_test:  |
       After reset goes low, the counter should increase by one with each rising edge of the clock.
       You are encouraged to try different clock rates.
+
+      If you enter `make` from the src directory, a cocotb test will run and report the results.
 
 # A description of what the inputs do
   inputs:
@@ -76,14 +82,14 @@ documentation:
 
 # A description of what the outputs do
   outputs:
-    - segment a ( 1's bit ....X)
-    - segment b ( 1's bit ...X.)
-    - segment c ( 1's bit ..X..)
-    - segment d ( 1's bit .X...)
-    - segment e ( 1's bit X....)
-    - segment f (10's bit ....X)
-    - segment g (10's bit ...X.)
-    -           (10's bit ..X..)
+    - segment a (thousand's bit X....)
+    - segment b (thousand's bit .X...)
+    - segment c (thousand's bit ..X..)
+    - segment d (thousand's bit ...X.)
+    - segment e (thousand's bit ....X)
+    - segment f (       1's bit ..X..)
+    - segment g (       1's bit ...X.)
+    -           (       1's bit ....X)
 
 # The following fields are optional
   tag:          "counter, grey, test"

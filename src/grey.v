@@ -4,33 +4,55 @@
   module grey
   (
    input [7:0]  io_in,
-   output [7:0] io_out,
-   output [1:0] ext_out
+   output [4:0] thou, hund, tens, ones
   );
 
    wire       i_clk        = io_in[0];
    wire       i_rst        = io_in[1];
    wire [5:0] i_unused     = io_in[7:2];
-   reg [4:0]  r_ones;
-   assign     io_out[4:0]  = r_ones;
-   reg [4:0]  r_tens;
-   assign     io_out[7:5]  = r_tens[2:0];
-   assign     ext_out      = r_tens[4:3];
+
+   reg [4:0]  r_ones, r_tens, r_hund, r_thou;
+   assign     ones         = r_ones;
+   assign     tens         = r_tens;
+   assign     hund         = r_hund;
+   assign     thou         = r_thou;
 
    always @( posedge i_clk )
      if( i_rst ) begin
         r_ones          <= 'd0;
         r_tens          <= 'd0;
+        r_hund          <= 'd0;
+        r_thou          <= 'd0;
      end
-     else if( r_ones == 'b10000 ) begin
-        r_tens          <= f_grey( r_tens );
-        r_ones          <= 'd0;
-     end
-     else begin
-        r_tens          <= r_tens;
-        r_ones          <= f_grey( r_ones );
-     end
+     else
+       casex({ r_hund == 'b10000, r_tens == 'b10000, r_ones == 'b10000 })
+         'b111: begin
+            r_thou      <= f_grey( r_thou );
+            r_hund      <= 'd0;
+            r_tens      <= 'd0;
+            r_ones      <= 'd0;
+         end
+         'b011: begin
+            r_thou      <= r_thou;
+            r_hund      <= f_grey( r_hund );
+            r_tens      <= 'd0;
+            r_ones      <= 'd0;
+         end
+         'bX01: begin
+            r_thou      <= r_thou;
+            r_hund      <= r_hund;
+            r_tens      <= f_grey( r_tens );
+            r_ones      <= 'd0;
+         end
+         default: begin
+            r_thou      <= r_thou;
+            r_hund      <= r_hund;
+            r_tens      <= r_tens;
+            r_ones      <= f_grey( r_ones );
+         end
+       endcase
 
+////////////////////////////////////////
    function [4:0] f_grey( input [4:0] f_in );
       case( f_in )
         'b00000: f_grey  = 'b00001;  // 0

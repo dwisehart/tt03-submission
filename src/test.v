@@ -4,10 +4,9 @@
   module test
   (
    input [7:0]  io_in,
-   output [7:0] io_out,
-   output [1:0] ext_out
+   output [4:0] thou, hund, tens, ones
   );
 
-   grey m_grey( io_in, io_out, ext_out );
+   grey m_grey( io_in, thou, hund, tens, ones );
 
 endmodule
