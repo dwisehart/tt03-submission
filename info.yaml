@@ -28,7 +28,6 @@ documentation:
       should change between scans.
 
       As an exampe of how this grey counter works, this is the progression from decimal 0 to 12:
-      \begin{table}[]
       \begin{tabular}{rrr}
       10's                                                 & 1's   & \multicolumn{1}{l}{count} \\
       00000                                                & 00000 & 0                         \\
@@ -43,9 +42,8 @@ documentation:
       00000                                                & 10000 & 9                         \\
       00001                                                & 00000 & 10                        \\
       00001                                                & 00001 & 11                        \\
-      00001                                                & 00011 & 12                       
+      00001                                                & 00011 & 12
       \end{tabular}
-      \end{table}
 
       But wait, you say, at decimal value 10, two bits change at once.  This is where your deciphering of the bits
       has to be smart.
