@@ -31,7 +31,7 @@ documentation:
       \begin{table}[]
       \begin{tabular}{rrr}
       10's                                                 & 1's   & \multicolumn{1}{l}{count} \\
-      \cellcolor[HTML]{0D1117}{\color[HTML]{E6EDF3} 00000} & 00000 & 0                         \\
+      00000                                                & 00000 & 0                         \\
       00000                                                & 00001 & 1                         \\
       00000                                                & 00011 & 2                         \\
       00000                                                & 00010 & 3                         \\
