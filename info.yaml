@@ -25,22 +25,22 @@ documentation:
 
       As an exampe of how this grey counter works, this is the progression of grey bits with the project when
       counting from from decimal 0 to 12:
-        \begin{tabular}{rrl}
-        10's  & 1's   & count \\
-        00000 & 00000 & 0     \\
-        00000 & 00001 & 1     \\
-        00000 & 00011 & 2     \\
-        00000 & 00010 & 3     \\
-        00000 & 00110 & 4     \\
-        00000 & 00100 & 5     \\
-        00000 & 01100 & 6     \\
-        00000 & 01000 & 7     \\
-        00000 & 11000 & 8     \\
-        00000 & 10000 & 9     \\
-        00001 & 00000 & 10    \\
-        00001 & 00001 & 11    \\
-        00001 & 00011 & 12
-        \end{tabular}
+      \begin{tabular}{rrl}
+      10's  & 1's   & count \\
+      00000 & 00000 & 0     \\
+      00000 & 00001 & 1     \\
+      00000 & 00011 & 2     \\
+      00000 & 00010 & 3     \\
+      00000 & 00110 & 4     \\
+      00000 & 00100 & 5     \\
+      00000 & 01100 & 6     \\
+      00000 & 01000 & 7     \\
+      00000 & 11000 & 8     \\
+      00000 & 10000 & 9     \\
+      00001 & 00000 & 10    \\
+      00001 & 00001 & 11    \\
+      00001 & 00011 & 12
+      \end{tabular}
 
       But wait, you say, at decimal value 10, two bits change at once.  This is where your deciphering of the bits
       has to be smart.
@@ -89,7 +89,7 @@ documentation:
       RANGE = 10,000,000 & 1890 sec \\
       \end{tabular}
 
-inputs:
+  inputs:
     - clock
     - reset
     - none

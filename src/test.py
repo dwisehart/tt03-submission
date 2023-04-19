@@ -2,11 +2,13 @@ import cocotb
 from cocotb.clock import Clock
 from cocotb.triggers import RisingEdge, FallingEdge, Timer, ClockCycles
 
-# RANGE =        10 * 1000  takes    2 sec
-# RANGE =       100 * 1000  takes   19 sec
-# RANGE =      1000 * 1000  takes  189 sec
-# RANGE = 10 * 1000 * 1000  takes 1890 sec ???
-RANGE  = 100 * 1000
+# RANGE =          10 * 1000  takes      2 sec
+# RANGE =         100 * 1000  takes     19 sec
+# RANGE =        1000 * 1000  takes    189 sec
+# RANGE =   10 * 1000 * 1000  takes   1890 sec ??? ~32 min
+# RANGE =  100 * 1000 * 1000  takes  18900 sec ??? ~5 hr 15 min
+# RANGE = 1000 * 1000 * 1000  takes 189000 sec ??? ~2 dy 4 hr 30 min
+RANGE  = 1000 * 1000
 
 
 ZERO   = 0b00000
