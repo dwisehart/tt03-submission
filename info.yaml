@@ -25,21 +25,21 @@ documentation:
       should change between scans.
 
       As an exampe of how this grey counter works, this is the progression from decimal 0 to 12:
-      \begin{tabular}{rrr}
-      10's                                                 & 1's   & \multicolumn{1}{l}{count} \\
-      00000                                                & 00000 & 0                         \\
-      00000                                                & 00001 & 1                         \\
-      00000                                                & 00011 & 2                         \\
-      00000                                                & 00010 & 3                         \\
-      00000                                                & 00110 & 4                         \\
-      00000                                                & 00100 & 5                         \\
-      00000                                                & 01100 & 6                         \\
-      00000                                                & 01000 & 7                         \\
-      00000                                                & 11000 & 8                         \\
-      00000                                                & 10000 & 9                         \\
-      00001                                                & 00000 & 10                        \\
-      00001                                                & 00001 & 11                        \\
-      00001                                                & 00011 & 12
+      \begin{tabular}{rrl}
+      10's  & 1's   & count \\
+      00000 & 00000 & 0     \\
+      00000 & 00001 & 1     \\
+      00000 & 00011 & 2     \\
+      00000 & 00010 & 3     \\
+      00000 & 00110 & 4     \\
+      00000 & 00100 & 5     \\
+      00000 & 01100 & 6     \\
+      00000 & 01000 & 7     \\
+      00000 & 11000 & 8     \\
+      00000 & 10000 & 9     \\
+      00001 & 00000 & 10    \\
+      00001 & 00001 & 11    \\
+      00001 & 00011 & 12
       \end{tabular}
 
       But wait, you say, at decimal value 10, two bits change at once.  This is where your deciphering of the bits
@@ -57,26 +57,30 @@ documentation:
       rolled over, and you update your internal copy of the 10's digit so that on the next clock cycle you do not
       detect a change in the 10's digit.
 
-      Note that in this implementation, the hardware--which only has 8 outputs--outputs the thousands digit and the
-      three fastest changing bits of the ones digit.  To see all bits flip, you have to run this in the simulator
-      or with cocotb.
+      Note that in this implementation, the hardware--which only has 8 outputs--outputs the slowest changing digit
+      and the three fastest changing bits of the ones digit.  To see all bits flip, you have to run this in the
+      simulator or with cocotb.  Here are the bits that are connected to the hardware outputs.
 
-      \begin{tabular}{llllll}
-      - & segment & a & 100M's & bit 4 & X.... \\
-      - & segment & b & 100M's & bit 3 & .X... \\
-      - & segment & c & 100M's & bit 2 & ..X.. \\
-      - & segment & d & 100M's & bit 1 & ...X. \\
-      - & segment & e & 100M's & bit 0 & ....X \\
-      - & segment & f & 1's    & bit 2 & ..X.. \\
-      - & segment & g & 1's    & bit 1 & ...X. \\
-      - & segment & h & 1's    & bit 0 & ....X
+      \begin{tabular}{lrll}
+      output 7 & 100M's & bit 4 & X.... \\
+      output 6 & 100M's & bit 3 & .X... \\
+      output 5 & 100M's & bit 2 & ..X.. \\
+      output 4 & 100M's & bit 1 & ...X. \\
+      output 3 & 100M's & bit 0 & ....X \\
+      output 2 & 1's    & bit 2 & ..X.. \\
+      output 1 & 1's    & bit 1 & ...X. \\
+      output 0 & 1's    & bit 0 & ....X
       \end{tabular}
 
   how_to_test:  |
       After reset goes low, the counter should increase by one with each rising edge of the clock.
       You are encouraged to try different clock rates.
 
-      If you enter `make` from the src directory, a cocotb test will run and report the results.
+      If you enter `make` from the src directory, a cocotb test will run and report the results.  Inside of test.py
+      there are two constants, TEST_10M and TEST_100M that can be changed to True if you want to test more.  The
+      default of testing the first million counts takes 130 seconds on my Intel Core i7 iMac.  Setting TEST_10M to
+      true requires 1,300 seconds.  Presumably, setting TEST_100M to true would require 13,000 seconds (more than
+      3-1/2 hours).
 
   inputs:
     - clock
@@ -89,14 +93,14 @@ documentation:
     - none
 
   outputs:
-    - 100M's bit 4
-    - 100M's bit 3
-    - 100M's bit 2
-    - 100M's bit 1
+    -    1's bit 0
+    -    1's bit 1
+    -    1's bit 2
     - 100M's bit 0
-    - 1's    bit 2
-    - 1's    bit 1
-    - 1's    bit 0
+    - 100M's bit 1
+    - 100M's bit 2
+    - 100M's bit 3
+    - 100M's bit 4
 
   tag:          "counter, grey, test"
   external_hw:  ""

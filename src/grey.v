@@ -4,6 +4,7 @@
   module grey
   (
    input [7:0]  io_in,
+   input [44:0] init,
    output [4:0] hunM, tenM, mil,
                 hunT, tenT, thou,
                 hund, tens, ones
@@ -26,15 +27,15 @@
 
    always @( posedge i_clk )
      if( i_rst ) begin
-        r_ones          <= 'd0;
-        r_tens          <= 'd0;
-        r_hund          <= 'd0;
-        r_thou          <= 'd0;
-        r_tenT          <= 'd0;
-        r_hunT          <= 'd0;
-        r_mil           <= 'd0;
-        r_tenM          <= 'd0;
-        r_hunM          <= 'd0;
+        r_ones          <= init[4:0];
+        r_tens          <= init[9:5];
+        r_hund          <= init[14:10];
+        r_thou          <= init[19:15];
+        r_tenT          <= init[24:20];
+        r_hunT          <= init[29:25];
+        r_mil           <= init[34:30];
+        r_tenM          <= init[39:35];
+        r_hunM          <= init[44:40];
      end
      else
        casex({                    r_tenM == 'b10000, r_mil == 'b10000,

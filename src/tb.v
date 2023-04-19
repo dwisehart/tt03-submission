@@ -5,6 +5,8 @@
   (
    input        CLK,
    input        RST,
+   input [44:0] INIT,
+
    output [4:0] ONES,
    output [4:0] TENS,
    output [4:0] HUND,
@@ -25,6 +27,7 @@
     test m_test
     (
      .io_in ({ 6'b0, RST, CLK }),
+     .init  ( INIT ),
      .hunM  ( HUN_MIL ),
      .tenM  ( TEN_MIL ),
      .mil   ( MIL ),

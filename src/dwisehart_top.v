@@ -11,9 +11,10 @@ module dwisehart_top
    //  Plus I add the three fastest changing bits to probe with a scope.
    grey m_grey
    (
-    .io_in( io_in ),
-    .hunM( io_out[7:3] ),
-    .ones( io_out[2:0] )
+    .io_in ( io_in ),
+    .init  ( 0 ),
+    .hunM  ( io_out[7:3] ),
+    .ones  ( io_out[2:0] )
    );
 
 endmodule
