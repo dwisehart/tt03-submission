@@ -1,5 +1,4 @@
 ---
-# TinyTapeout project information
 project:
   wokwi_id:    0        # If using wokwi, set this to your project's ID
 
@@ -8,7 +7,6 @@ project:
     - dwisehart_top.v
   top_module:  "dwisehart_top"
 
-# Keep a track of the submission yaml
 yaml_version: 3.0
 
 documentation:
@@ -17,7 +15,6 @@ documentation:
   language:     "Verilog"
   description:  "Change only one output bit per count, but count with decimal digits instead of the usual reverse bit order grey counter."
 
-# Longer description of how the project works. You can use standard markdown format.
   how_it_works: |
       Like a standard grey counter, this counter will only change one bit per time, but the bits are grouped into
       decimal digits.  (This also makes for easy bits -> decimal decoding for the interested.)
@@ -64,14 +61,23 @@ documentation:
       three fastest changing bits of the ones digit.  To see all bits flip, you have to run this in the simulator
       or with cocotb.
 
-# Instructions on how someone could test your project
+      \begin{tabular}{llllll}
+      - & segment & a & 100M's & bit 4 & X.... \\
+      - & segment & b & 100M's & bit 3 & .X... \\
+      - & segment & c & 100M's & bit 2 & ..X.. \\
+      - & segment & d & 100M's & bit 1 & ...X. \\
+      - & segment & e & 100M's & bit 0 & ....X \\
+      - & segment & f & 1's    & bit 2 & ..X.. \\
+      - & segment & g & 1's    & bit 1 & ...X. \\
+      - & segment & h & 1's    & bit 0 & ....X
+      \end{tabular}
+
   how_to_test:  |
       After reset goes low, the counter should increase by one with each rising edge of the clock.
       You are encouraged to try different clock rates.
 
       If you enter `make` from the src directory, a cocotb test will run and report the results.
 
-# A description of what the inputs do
   inputs:
     - clock
     - reset
@@ -82,20 +88,16 @@ documentation:
     - none
     - none
 
-# A description of what the outputs do
   outputs:
-    \begin{tabular}{llllll}
-    - & segment & a & 100M's & bit 4 & X.... \\
-    - & segment & b & 100M's & bit 3 & .X... \\
-    - & segment & c & 100M's & bit 2 & ..X.. \\
-    - & segment & d & 100M's & bit 1 & ...X. \\
-    - & segment & e & 100M's & bit 0 & ....X \\
-    - & segment & f & 1's    & bit 2 & ..X.. \\
-    - & segment & g & 1's    & bit 1 & ...X. \\
-    - & segment & h & 1's    & bit 0 & ....X
-    \end{tabular}
+    - 100M's bit 4
+    - 100M's bit 3
+    - 100M's bit 2
+    - 100M's bit 1
+    - 100M's bit 0
+    - 1's    bit 2
+    - 1's    bit 1
+    - 1's    bit 0
 
-# The following fields are optional
   tag:          "counter, grey, test"
   external_hw:  ""
   discord:      "danielwyo#2929"
