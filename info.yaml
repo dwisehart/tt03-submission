@@ -11,7 +11,7 @@ yaml_version: 3.0
 
 documentation:
   author:       "Daniel Wisehart"
-  title:        "Base-10 grey counter up to 100 million"
+  title:        "Base-10 grey counter from zero to a billion"
   language:     "Verilog"
   description:  "Change only one output bit per count, but count with decimal digits instead of the usual reverse bit order grey counter."
 
@@ -20,27 +20,27 @@ documentation:
       decimal digits.  (This also makes for easy bits -> decimal decoding for the interested.)
 
       Each decimal digit uses five bits.  As with all grey counters, you have to scan the counter output fast
-      enough that either the value is the same or the value has increased by one.  If you scan too slowly and the
-      value changes by 2 or more, then the grey counter can give you false indications: only a single bit, at most,
-      should change between scans.
+      enough that either the value is the same or the value has only increased by one between scans.  If you scan
+      too slowly and the value changes by 2 or more, then the grey counter can and will give you bad counts.
 
-      As an exampe of how this grey counter works, this is the progression from decimal 0 to 12:
-      \begin{tabular}{rrl}
-      10's  & 1's   & count \\
-      00000 & 00000 & 0     \\
-      00000 & 00001 & 1     \\
-      00000 & 00011 & 2     \\
-      00000 & 00010 & 3     \\
-      00000 & 00110 & 4     \\
-      00000 & 00100 & 5     \\
-      00000 & 01100 & 6     \\
-      00000 & 01000 & 7     \\
-      00000 & 11000 & 8     \\
-      00000 & 10000 & 9     \\
-      00001 & 00000 & 10    \\
-      00001 & 00001 & 11    \\
-      00001 & 00011 & 12
-      \end{tabular}
+      As an exampe of how this grey counter works, this is the progression of grey bits with the project when
+      counting from from decimal 0 to 12:
+        \begin{tabular}{rrl}
+        10's  & 1's   & count \\
+        00000 & 00000 & 0     \\
+        00000 & 00001 & 1     \\
+        00000 & 00011 & 2     \\
+        00000 & 00010 & 3     \\
+        00000 & 00110 & 4     \\
+        00000 & 00100 & 5     \\
+        00000 & 01100 & 6     \\
+        00000 & 01000 & 7     \\
+        00000 & 11000 & 8     \\
+        00000 & 10000 & 9     \\
+        00001 & 00000 & 10    \\
+        00001 & 00001 & 11    \\
+        00001 & 00011 & 12
+        \end{tabular}
 
       But wait, you say, at decimal value 10, two bits change at once.  This is where your deciphering of the bits
       has to be smart.
@@ -51,15 +51,16 @@ documentation:
       then you look at both digits to decipher the combined value: 1 or 2 or ... 98 or 99.
 
       Some work has been done to insure that the 10's digit changes before the 1's digit, but if the physical
-      routes between the outputs of this circuit and the inputs of your scanning circuit make the 10's output bits
-      arrive later, it is possible that you will receive a 1's bit that changes from 9 ('b10000) to 0 ('b00000)
-      even though you have not yet seen the 10's value change.  That is fine.  You know that the 10's digit has
-      rolled over, and you update your internal copy of the 10's digit so that on the next clock cycle you do not
-      detect a change in the 10's digit.
+      routes between the outputs of this circuit and the inputs to your scanning circuit make the 10's bits
+      arrive at your inputs later than the 1's bits, you can and will receive 1's bits that change from 9 ('b10000)
+      to 0 ('b00000) even though you have not yet seen the 10's bits change.  That can be worked around because you
+      can deduce that the 10's digit has rolled over, so you update your internal copy of the 10's bits.  Better to
+      keep the input paths the same length or make the 1's bits use a longer path than the 10's bits.
 
-      Note that in this implementation, the hardware--which only has 8 outputs--outputs the slowest changing digit
-      and the three fastest changing bits of the ones digit.  To see all bits flip, you have to run this in the
-      simulator or with cocotb.  Here are the bits that are connected to the hardware outputs.
+      Note that in this implementation, the TinyTapeout PCB hardware--which only has 8 outputs--outputs the slowest
+      changing bits of the hundred million digit and the three fastest changing bits of the ones digit.  To see all
+      bits flip, you have to run this in the simulator or with cocotb.  Here are the bits that are connected to the
+      hardware outputs.
 
       \begin{tabular}{lrll}
       output 7 & 100M's & bit 4 & X.... \\
@@ -74,15 +75,21 @@ documentation:
 
   how_to_test:  |
       After reset goes low, the counter should increase by one with each rising edge of the clock.
-      You are encouraged to try different clock rates.
+      You are encouraged to try different clock rates.  If you load a 45 bit value into the init input before you
+      assert reset, that bit pattern will be loaded into the grey counter.
 
       If you enter `make` from the src directory, a cocotb test will run and report the results.  Inside of test.py
-      there are two constants, TEST_10M and TEST_100M that can be changed to True if you want to test more.  The
-      default of testing the first million counts takes 130 seconds on my Intel Core i7 iMac.  Setting TEST_10M to
-      true requires 1,300 seconds.  Presumably, setting TEST_100M to true would require 13,000 seconds (more than
-      3-1/2 hours).
+      there is a RANGE constant at the top of the file which you can use to tell cocotb how many different values
+      to check.  Here are some representative test times:
 
-  inputs:
+      \begin{tabular}{lr}
+      RANGE =     10,000 &    2 sec \\
+      RANGE =    100,000 &   19 sec \\
+      RANGE =  1,000,000 &  189 sec \\
+      RANGE = 10,000,000 & 1890 sec \\
+      \end{tabular}
+
+inputs:
     - clock
     - reset
     - none

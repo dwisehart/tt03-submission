@@ -184,7 +184,7 @@ async def test_my_design( dut ):
     await ClockCycles( dut.CLK, 10 )
     dut.RST.value = 0
 
-    dut._log.info( "Checking counts from %d to %d", cnt, ( cnt + RANGE ) % MAX_VALUE )
+    dut._log.info( "Checking %d counts from %d to %d", RANGE, cnt, ( cnt + RANGE ) % MAX_VALUE )
     for xx in range( RANGE ):
         await ClockCycles( dut.CLK, 1 )
         test_grey_cnt( dut, cnt )
