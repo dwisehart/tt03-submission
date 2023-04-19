@@ -84,14 +84,16 @@ documentation:
 
 # A description of what the outputs do
   outputs:
-    - segment a (100M's bit X....)
-    - segment b (100M's bit .X...)
-    - segment c (100M's bit ..X..)
-    - segment d (100M's bit ...X.)
-    - segment e (100M's bit ....X)
-    - segment f (   1's bit ..X..)
-    - segment g (   1's bit ...X.)
-    -           (   1's bit ....X)
+    \begin{tabular}{llllll}
+    - & segment & a & 100M's & bit 4 & X.... \\
+    - & segment & b & 100M's & bit 3 & .X... \\
+    - & segment & c & 100M's & bit 2 & ..X.. \\
+    - & segment & d & 100M's & bit 1 & ...X. \\
+    - & segment & e & 100M's & bit 0 & ....X \\
+    - & segment & f & 1's    & bit 2 & ..X.. \\
+    - & segment & g & 1's    & bit 1 & ...X. \\
+    - & segment & h & 1's    & bit 0 & ....X
+    \end{tabular}
 
 # The following fields are optional
   tag:          "counter, grey, test"
