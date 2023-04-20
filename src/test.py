@@ -5,7 +5,7 @@ from cocotb.triggers import RisingEdge, FallingEdge, Timer, ClockCycles
 # RANGE =          10 * 1000  takes      2 sec
 # RANGE =         100 * 1000  takes     19 sec
 # RANGE =        1000 * 1000  takes    189 sec
-# RANGE =   10 * 1000 * 1000  takes   1890 sec ??? ~32 min
+# RANGE =   10 * 1000 * 1000  takes   2193 sec     ~37 min
 # RANGE =  100 * 1000 * 1000  takes  18900 sec ??? ~5 hr 15 min
 # RANGE = 1000 * 1000 * 1000  takes 189000 sec ??? ~2 dy 4 hr 30 min
 RANGE  = 1000 * 1000
@@ -172,6 +172,7 @@ def test_grey_cnt( dut, cnt ):
 
 
 MAX_VALUE  = 1000 * 1000 * 1000
+LOG_INCR   =         100 * 1000
 
 @cocotb.test()
 async def test_my_design( dut ):
@@ -187,7 +188,11 @@ async def test_my_design( dut ):
     dut.RST.value = 0
 
     dut._log.info( "Checking %d counts from %d to %d", RANGE, cnt, ( cnt + RANGE ) % MAX_VALUE )
+    next_log = ( cnt + LOG_INCR ) % MAX_VALUE
     for xx in range( RANGE ):
         await ClockCycles( dut.CLK, 1 )
         test_grey_cnt( dut, cnt )
         cnt = ( cnt + 1 ) % MAX_VALUE
+        if cnt == next_log:
+            dut._log.info( "Count up to %d", cnt )
+            next_log = ( cnt + LOG_INCR ) % MAX_VALUE

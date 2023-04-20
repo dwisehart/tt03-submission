@@ -13,7 +13,7 @@ module dwisehart_top
    (
     .io_in ( io_in ),
     .init  ( 0 ),
-    .hunM  ( io_out[7:3] ),
+    .hunB  ( io_out[7:3] ),
     .ones  ( io_out[2:0] )
    );
 

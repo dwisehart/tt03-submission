@@ -5,7 +5,7 @@
   (
    input        CLK,
    input        RST,
-   input [44:0] INIT,
+   input [59:0] INIT,
 
    output [4:0] ONES,
    output [4:0] TENS,
@@ -16,6 +16,9 @@
    output [4:0] MIL,
    output [4:0] TEN_MIL,
    output [4:0] HUN_MIL
+   output [4:0] BIL,
+   output [4:0] TEN_BIL,
+   output [4:0] HUN_BIL
   );
 
    initial begin
@@ -28,6 +31,9 @@
     (
      .io_in ({ 6'b0, RST, CLK }),
      .init  ( INIT ),
+     .hunB  ( HUN_BIL ),
+     .tenB  ( TEN_BIL ),
+     .bil   ( BIL ),
      .hunM  ( HUN_MIL ),
      .tenM  ( TEN_MIL ),
      .mil   ( MIL ),

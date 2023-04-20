@@ -4,12 +4,13 @@
   module test
   (
    input [7:0]  io_in,
-   input [44:0] init,
-   output [4:0] hunM, tenM, mil,
+   input [59:0] init,
+   output [4:0] hunB, tenB, bil,
+                hunM, tenM, mil,
                 hunT, tenT, thou,
                 hund, tens, ones
   );
 
-   grey m_grey( io_in, init, hunM, tenM, mil, hunT, tenT, thou, hund, tens, ones );
+   grey m_grey( io_in, init, hunB, tenB, bil, hunM, tenM, mil, hunT, tenT, thou, hund, tens, ones );
 
 endmodule
