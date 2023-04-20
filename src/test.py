@@ -8,7 +8,7 @@ from cocotb.triggers import RisingEdge, FallingEdge, Timer, ClockCycles
 # RANGE =   10 * 1000 * 1000  takes   2193 sec     ~37 min
 # RANGE =  100 * 1000 * 1000  takes  18900 sec ??? ~5 hr 15 min
 # RANGE = 1000 * 1000 * 1000  takes 189000 sec ??? ~2 dy 4 hr 30 min
-RANGE  = 1000 * 1000
+RANGE  =  1000 * 1000
 
 
 ZERO   = 0b00000

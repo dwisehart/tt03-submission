@@ -11,7 +11,7 @@ yaml_version: 3.0
 
 documentation:
   author:       "Daniel Wisehart"
-  title:        "Base-10 grey counter from zero to a billion"
+  title:        "Base-10 grey counter from zero to a trillion"
   language:     "Verilog"
   description:  "Change only one output bit per count, but count with decimal digits instead of the usual reverse bit order grey counter."
 

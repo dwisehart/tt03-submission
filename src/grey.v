@@ -8,13 +8,14 @@
    output [4:0] hunB, tenB, bil,
                 hunM, tenM, mil,
                 hunT, tenT, thou,
-                hund, tens, ones
+                hund, tens, ones,
+   output [7:0] io_out
   );
 
    wire       i_clk        = io_in[0];
    wire       i_rst        = io_in[1];
-   wire [5:0] i_unused     = io_in[7:2];
 
+////////////////////////////////////////
    reg [4:0]  r_ones, r_tens, r_hund, r_thou,
               r_tenT, r_hunT, r_thouT,
               r_mil, r_tenM, r_hunM,
@@ -238,5 +239,54 @@
         default: f_grey  = 'b00000;  // 9 or anything else
       endcase
    endfunction
+
+//////////////////////////////////////////////////
+   wire       w_zero        = ( r_hunB == 'd0 &&
+                                r_tenB == 'd0 &&
+                                r_bil  == 'd0 &&
+                                r_hunM == 'd0 &&
+                                r_tenM == 'd0 &&
+                                r_mil  == 'd0 &&
+                                r_hunT == 'd0 &&
+                                r_tenT == 'd0 &&
+                                r_thou == 'd0 &&
+                                r_hund == 'd0 &&
+                                r_tens == 'd0 &&
+                                r_ones == 'd0 );
+   reg        r_clk, r_zero;
+
+   always @( posedge i_clk )
+     if( i_rst ) begin
+        r_clk              <= 'b0;
+        r_zero             <= 'b0;
+     end
+     else begin
+        r_clk              <= ~ r_clk;
+        r_zero             <= w_zero;
+     end
+
+////////////////////////////////////////
+   wire [5:0] i_sel         = io_in[7:2];
+   reg [7:0]  r_out;
+   assign     io_out        = r_out;
+
+   always @( posedge i_clk )
+     if( i_rst )
+       r_out               <= 'd0;
+     else
+       case( i_sel )
+         'b0001_01: r_out  <= { w_zero,      r_hunB, r_tenB[5:4] };
+         'b0001_10: r_out  <= { r_hunB[0],   r_tenB, r_bil[5:4] };
+         'b0001_11: r_out  <= { r_tenB[0],   r_bil,  r_hunM[5:4] };
+         'b0010_01: r_out  <= { r_bil[0],    r_hunM, r_tenM[5:4] };
+         'b0010_10: r_out  <= { r_hunM[0],   r_tenM, r_mil[5:4] };
+         'b0010_11: r_out  <= { r_tenM[0],   r_mil,  r_hunT[5:4] };
+         'b0100_01: r_out  <= { r_mil[0],    r_hunT, r_tenT[5:4] };
+         'b0100_10: r_out  <= { r_hunT[0],   r_tenT, r_thou[5:4] };
+         'b0100_11: r_out  <= { r_tenT[0],   r_thou, r_hund[5:4] };
+         'b1000_01: r_out  <= { r_thou[0],   r_hund, r_tens[5:4] };
+         'b1000_10: r_out  <= { r_hund[0],   r_tens, r_ones[5:4] };
+         default:   r_out  <= { r_tens[1:0], r_ones, r_clk };
+       endcase
 
 endmodule

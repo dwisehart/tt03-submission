@@ -2,9 +2,9 @@
 SIM ?= icarus
 TOPLEVEL_LANG ?= verilog
 
-VERILOG_SOURCES += $(PWD)/tb.v \
-	${PWD}/test.v \
-	${PWD}/grey.v
+VERILOG_SOURCES += \
+	${PWD}/grey.v \
+	$(PWD)/tb.v
 
 TOPLEVEL = tb
 MODULE = test

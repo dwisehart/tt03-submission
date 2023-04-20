@@ -8,9 +8,10 @@
    output [4:0] hunB, tenB, bil,
                 hunM, tenM, mil,
                 hunT, tenT, thou,
-                hund, tens, ones
+                hund, tens, ones,
+   output [7:0] io_out
   );
 
-   grey m_grey( io_in, init, hunB, tenB, bil, hunM, tenM, mil, hunT, tenT, thou, hund, tens, ones );
+   grey m_grey( io_in, init, hunB, tenB, bil, hunM, tenM, mil, hunT, tenT, thou, hund, tens, ones, io_out );
 
 endmodule
