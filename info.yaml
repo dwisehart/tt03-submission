@@ -11,16 +11,16 @@ yaml_version: 3.0
 
 documentation:
   author:       "Daniel Wisehart"
-  title:        "Base-10 grey counter from zero to a trillion"
+  title:        "Base-10 grey counter counts from zero to a trillion"
   language:     "Verilog"
   description:  "Change only one output bit per count, but count with decimal digits instead of the usual reverse bit order grey counter."
 
   how_it_works: |
       Like a standard grey counter, this counter will only change one bit per time, but the bits are grouped into
-      decimal digits.  (This also makes for easy bits -> decimal decoding for the interested.)
+      decimal digits.  (This also makes for easy bits -> decimal decoding, which is done in the test.py file.)
 
       Each decimal digit uses five bits.  As with all grey counters, you have to scan the counter output fast
-      enough that either the value is the same or the value has only increased by one between scans.  If you scan
+      enough that either the output value is the same or it has only increased by 1 between scans.  If you scan
       too slowly and the value changes by 2 or more, then the grey counter can and will give you bad counts.
 
       As an exampe of how this grey counter works, this is the progression of grey bits with the project when

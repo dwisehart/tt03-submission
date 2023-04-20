@@ -12,6 +12,17 @@
    output [7:0] io_out
   );
 
+   localparam pZERO        = 'b10001;
+   localparam pONE         = 'b00001;
+   localparam pTWO         = 'b00011;
+   localparam pTHREE       = 'b00010;
+   localparam pFOUR        = 'b00110;
+   localparam pFIVE        = 'b00100;
+   localparam pSIX         = 'b01100;
+   localparam pSEVEN       = 'b01000;
+   localparam pEIGHT       = 'b11000;
+   localparam pNINE        = 'b10000;
+
    wire       i_clk        = io_in[0];
    wire       i_rst        = io_in[1];
 
@@ -36,79 +47,79 @@
 
    always @( posedge i_clk )
      if( i_rst ) begin
-        r_hunB          <= init[59:55];
-        r_tenB          <= init[54:50];
-        r_bil           <= init[49:45];
-        r_hunM          <= init[44:40];
-        r_tenM          <= init[39:35];
-        r_mil           <= init[34:30];
-        r_hunT          <= init[29:25];
-        r_tenT          <= init[24:20];
-        r_thou          <= init[19:15];
-        r_hund          <= init[14:10];
-        r_tens          <= init[9:5];
-        r_ones          <= init[4:0];
+        r_hunB          <= f_init_grey( init[59:55] );
+        r_tenB          <= f_init_grey( init[54:50] );
+        r_bil           <= f_init_grey( init[49:45] );
+        r_hunM          <= f_init_grey( init[44:40] );
+        r_tenM          <= f_init_grey( init[39:35] );
+        r_mil           <= f_init_grey( init[34:30] );
+        r_hunT          <= f_init_grey( init[29:25] );
+        r_tenT          <= f_init_grey( init[24:20] );
+        r_thou          <= f_init_grey( init[19:15] );
+        r_hund          <= f_init_grey( init[14:10] );
+        r_tens          <= f_init_grey(   init[9:5] );
+        r_ones          <= f_init_grey(   init[4:0] );
      end
      else
-       casex({                    r_tenB == 'b10000, r_bil == 'b10000,
-               r_hunM == 'b10000, r_tenM == 'b10000, r_mil == 'b10000,
-               r_hunT == 'b10000, r_tenT == 'b10000, r_thou == 'b10000,
-               r_hund == 'b10000, r_tens == 'b10000, r_ones == 'b10000 })
+       casex({                  r_tenB == pNINE,  r_bil == pNINE,
+               r_hunM == pNINE, r_tenM == pNINE,  r_mil == pNINE,
+               r_hunT == pNINE, r_tenT == pNINE, r_thou == pNINE,
+               r_hund == pNINE, r_tens == pNINE, r_ones == pNINE })
          'b11_111_111_111: begin
             r_hunB      <= f_grey( r_hunB );
-            r_tenB      <= 'd0;
-            r_bil       <= 'd0;
-            r_hunM      <= 'd0;
-            r_tenM      <= 'd0;
-            r_mil       <= 'd0;
-            r_hunT      <= 'd0;
-            r_tenT      <= 'd0;
-            r_thou      <= 'd0;
-            r_hund      <= 'd0;
-            r_tens      <= 'd0;
-            r_ones      <= 'd0;
+            r_tenB      <= pZERO;
+            r_bil       <= pZERO;
+            r_hunM      <= pZERO;
+            r_tenM      <= pZERO;
+            r_mil       <= pZERO;
+            r_hunT      <= pZERO;
+            r_tenT      <= pZERO;
+            r_thou      <= pZERO;
+            r_hund      <= pZERO;
+            r_tens      <= pZERO;
+            r_ones      <= pZERO;
          end
          'b01_111_111_111: begin
             r_hunB      <= r_hunB;
             r_tenB      <= f_grey( r_tenB );
-            r_bil       <= 'd0;
-            r_hunM      <= 'd0;
-            r_tenM      <= 'd0;
-            r_mil       <= 'd0;
-            r_hunT      <= 'd0;
-            r_tenT      <= 'd0;
-            r_thou      <= 'd0;
-            r_hund      <= 'd0;
-            r_tens      <= 'd0;
-            r_ones      <= 'd0;
+            r_bil       <= pZERO;
+            r_hunM      <= pZERO;
+            r_tenM      <= pZERO;
+            r_mil       <= pZERO;
+            r_hunT      <= pZERO;
+            r_tenT      <= pZERO;
+            r_thou      <= pZERO;
+            r_hund      <= pZERO;
+            r_tens      <= pZERO;
+            r_ones      <= pZERO;
          end
          'bX0_111_111_111: begin
             r_hunB      <= r_hunB;
             r_tenB      <= r_tenB;
             r_bil       <= f_grey( r_mil );
-            r_hunM      <= 'd0;
-            r_tenM      <= 'd0;
-            r_mil       <= 'd0;
-            r_hunT      <= 'd0;
-            r_tenT      <= 'd0;
-            r_thou      <= 'd0;
-            r_hund      <= 'd0;
-            r_tens      <= 'd0;
-            r_ones      <= 'd0;
+            r_hunM      <= pZERO;
+            r_tenM      <= pZERO;
+            r_mil       <= pZERO;
+            r_hunT      <= pZERO;
+            r_tenT      <= pZERO;
+            r_thou      <= pZERO;
+            r_hund      <= pZERO;
+            r_tens      <= pZERO;
+            r_ones      <= pZERO;
          end
          'bXX_011_111_111: begin
             r_hunB      <= r_hunB;
             r_tenB      <= r_tenB;
             r_bil       <= r_bil;
             r_hunM      <= f_grey( r_hunM );
-            r_tenM      <= 'd0;
-            r_mil       <= 'd0;
-            r_hunT      <= 'd0;
-            r_tenT      <= 'd0;
-            r_thou      <= 'd0;
-            r_hund      <= 'd0;
-            r_tens      <= 'd0;
-            r_ones      <= 'd0;
+            r_tenM      <= pZERO;
+            r_mil       <= pZERO;
+            r_hunT      <= pZERO;
+            r_tenT      <= pZERO;
+            r_thou      <= pZERO;
+            r_hund      <= pZERO;
+            r_tens      <= pZERO;
+            r_ones      <= pZERO;
          end
          'bXX_X01_111_111: begin
             r_hunB      <= r_hunB;
@@ -116,13 +127,13 @@
             r_bil       <= r_bil;
             r_hunM      <= r_hunM;
             r_tenM      <= f_grey( r_tenM );
-            r_mil       <= 'd0;
-            r_hunT      <= 'd0;
-            r_tenT      <= 'd0;
-            r_thou      <= 'd0;
-            r_hund      <= 'd0;
-            r_tens      <= 'd0;
-            r_ones      <= 'd0;
+            r_mil       <= pZERO;
+            r_hunT      <= pZERO;
+            r_tenT      <= pZERO;
+            r_thou      <= pZERO;
+            r_hund      <= pZERO;
+            r_tens      <= pZERO;
+            r_ones      <= pZERO;
          end
          'bXX_XX0_111_111: begin
             r_hunB      <= r_hunB;
@@ -131,12 +142,12 @@
             r_hunM      <= r_hunM;
             r_tenM      <= r_tenM;
             r_mil       <= f_grey( r_mil );
-            r_hunT      <= 'd0;
-            r_tenT      <= 'd0;
-            r_thou      <= 'd0;
-            r_hund      <= 'd0;
-            r_tens      <= 'd0;
-            r_ones      <= 'd0;
+            r_hunT      <= pZERO;
+            r_tenT      <= pZERO;
+            r_thou      <= pZERO;
+            r_hund      <= pZERO;
+            r_tens      <= pZERO;
+            r_ones      <= pZERO;
          end
          'bXX_XXX_011_111: begin
             r_hunB      <= r_hunB;
@@ -146,11 +157,11 @@
             r_tenM      <= r_tenM;
             r_mil       <= r_mil;
             r_hunT      <= f_grey( r_hunT );
-            r_tenT      <= 'd0;
-            r_thou      <= 'd0;
-            r_hund      <= 'd0;
-            r_tens      <= 'd0;
-            r_ones      <= 'd0;
+            r_tenT      <= pZERO;
+            r_thou      <= pZERO;
+            r_hund      <= pZERO;
+            r_tens      <= pZERO;
+            r_ones      <= pZERO;
          end
          'bXX_XXX_X01_111: begin
             r_hunB      <= r_hunB;
@@ -161,10 +172,10 @@
             r_mil       <= r_mil;
             r_hunT      <= r_hunT;
             r_tenT      <= f_grey( r_tenT );
-            r_thou      <= 'd0;
-            r_hund      <= 'd0;
-            r_tens      <= 'd0;
-            r_ones      <= 'd0;
+            r_thou      <= pZERO;
+            r_hund      <= pZERO;
+            r_tens      <= pZERO;
+            r_ones      <= pZERO;
          end
          'bXX_XXX_XX0_111: begin
             r_hunB      <= r_hunB;
@@ -176,9 +187,9 @@
             r_hunT      <= r_hunT;
             r_tenT      <= r_tenT;
             r_thou      <= f_grey( r_thou );
-            r_hund      <= 'd0;
-            r_tens      <= 'd0;
-            r_ones      <= 'd0;
+            r_hund      <= pZERO;
+            r_tens      <= pZERO;
+            r_ones      <= pZERO;
          end
          'bXX_XXX_XXX_011: begin
             r_hunB      <= r_hunB;
@@ -191,8 +202,8 @@
             r_tenT      <= r_tenT;
             r_thou      <= r_thou;
             r_hund      <= f_grey( r_hund );
-            r_tens      <= 'd0;
-            r_ones      <= 'd0;
+            r_tens      <= pZERO;
+            r_ones      <= pZERO;
          end
          'bXX_XXX_XXX_X01: begin
             r_hunB      <= r_hunB;
@@ -206,7 +217,7 @@
             r_thou      <= r_thou;
             r_hund      <= r_hund;
             r_tens      <= f_grey( r_tens );
-            r_ones      <= 'd0;
+            r_ones      <= pZERO;
          end
          default: begin
             r_hunB      <= r_hunB;
@@ -227,32 +238,49 @@
 ////////////////////////////////////////
    function [4:0] f_grey( input [4:0] f_in );
       case( f_in )
-        'b00000: f_grey  = 'b00001;  // 0
-        'b00001: f_grey  = 'b00011;  // 1
-        'b00011: f_grey  = 'b00010;  // 2
-        'b00010: f_grey  = 'b00110;  // 3
-        'b00110: f_grey  = 'b00100;  // 4
-        'b00100: f_grey  = 'b01100;  // 5
-        'b01100: f_grey  = 'b01000;  // 6
-        'b01000: f_grey  = 'b11000;  // 7
-        'b11000: f_grey  = 'b10000;  // 8
-        default: f_grey  = 'b00000;  // 9 or anything else
+        pZERO:   f_grey  = pONE;
+        pONE:    f_grey  = pTWO;
+        pTWO:    f_grey  = pTHREE;
+        pTHREE:  f_grey  = pFOUR;
+        pFOUR:   f_grey  = pFIVE;
+        pFIVE:   f_grey  = pSIX;
+        pSIX:    f_grey  = pSEVEN;
+        pSEVEN:  f_grey  = pEIGHT;
+        pEIGHT:  f_grey  = pNINE;
+        default: f_grey  = pZERO;
+      endcase
+   endfunction
+
+////////////////////////////////////////
+   function [4:0] f_init_grey( input [4:0] f_in );
+      case( f_in )
+        pZERO:   f_init_grey  = pZERO;
+        pONE:    f_init_grey  = pONE;
+        pTWO:    f_init_grey  = pTWO;
+        pTHREE:  f_init_grey  = pTHREE;
+        pFOUR:   f_init_grey  = pFOUR;
+        pFIVE:   f_init_grey  = pFIVE;
+        pSIX:    f_init_grey  = pSIX;
+        pSEVEN:  f_init_grey  = pSEVEN;
+        pEIGHT:  f_init_grey  = pEIGHT;
+        pNINE:   f_init_grey  = pNINE;
+        default: f_init_grey  = pZERO;
       endcase
    endfunction
 
 //////////////////////////////////////////////////
-   wire       w_zero        = ( r_hunB == 'd0 &&
-                                r_tenB == 'd0 &&
-                                r_bil  == 'd0 &&
-                                r_hunM == 'd0 &&
-                                r_tenM == 'd0 &&
-                                r_mil  == 'd0 &&
-                                r_hunT == 'd0 &&
-                                r_tenT == 'd0 &&
-                                r_thou == 'd0 &&
-                                r_hund == 'd0 &&
-                                r_tens == 'd0 &&
-                                r_ones == 'd0 );
+   wire       w_zero        = ( r_hunB == pZERO &&
+                                r_tenB == pZERO &&
+                                r_bil  == pZERO &&
+                                r_hunM == pZERO &&
+                                r_tenM == pZERO &&
+                                r_mil  == pZERO &&
+                                r_hunT == pZERO &&
+                                r_tenT == pZERO &&
+                                r_thou == pZERO &&
+                                r_hund == pZERO &&
+                                r_tens == pZERO &&
+                                r_ones == pZERO );
    reg        r_clk, r_zero;
 
    always @( posedge i_clk )

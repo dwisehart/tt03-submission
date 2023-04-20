@@ -6,12 +6,11 @@ from cocotb.triggers import RisingEdge, FallingEdge, Timer, ClockCycles
 # RANGE =         100 * 1000  takes     19 sec
 # RANGE =        1000 * 1000  takes    189 sec
 # RANGE =   10 * 1000 * 1000  takes   2193 sec     ~37 min
-# RANGE =  100 * 1000 * 1000  takes  18900 sec ??? ~5 hr 15 min
-# RANGE = 1000 * 1000 * 1000  takes 189000 sec ??? ~2 dy 4 hr 30 min
-RANGE  =  1000 * 1000
+# RANGE =  100 * 1000 * 1000  takes  21572 sec     ~6 hr
+RANGE  =          100 * 1000
 
 
-ZERO   = 0b00000
+ZERO   = 0b10001
 ONE    = 0b00001
 TWO    = 0b00011
 THREE  = 0b00010
@@ -85,7 +84,22 @@ def bit_grey( cnt ) -> int:
     rem9  = int( rem8 / 10 )
     ret9  = get_value( val9 )
 
-    return (((((((((((((((( ret9 *32 ) +
+    val10 = rem9 % 10
+    rem10 = int( rem9 / 10 )
+    ret10 = get_value( val10 )
+
+    val11 = rem10 % 10
+    rem11 = int( rem10 / 10 )
+    ret11 = get_value( val11 )
+
+    val12 = rem11 % 10
+    rem12 = int( rem11 / 10 )
+    ret12 = get_value( val12 )
+
+    return ((((((((((((((((((((((( ret12 ) *32 ) +
+                                ret11 ) *32 ) +
+                              ret10 ) *32 ) +
+                            ret9 ) *32 ) +
                           ret8 ) *32 ) +
                         ret7 ) *32 ) +
                       ret6 ) *32 ) +
@@ -97,7 +111,10 @@ def bit_grey( cnt ) -> int:
 
 
 def get_grey( dut ):
-    return ( str( dut.HUN_MIL.value ) + " " +
+    return ( str( dut.HUN_BIL.value ) + " " +
+             str( dut.TEN_BIL.value ) + " " +
+             str( dut.BIL.value ) + " " +
+             str( dut.HUN_MIL.value ) + " " +
              str( dut.TEN_MIL.value ) + " " +
              str( dut.MIL.value ) + " " +
              str( dut.HUN_THOU.value ) + " " +
@@ -170,9 +187,21 @@ def test_grey_cnt( dut, cnt ):
     rem9  = int( rem8 / 10 )
     match_value( int( dut.HUN_MIL.value ), val9, dut, cnt )
 
+    val10  = rem9 % 10
+    rem10  = int( rem9 / 10 )
+    match_value( int( dut.BIL.value ), val10, dut, cnt )
 
-MAX_VALUE  = 1000 * 1000 * 1000
-LOG_INCR   =         100 * 1000
+    val11  = rem10 % 10
+    rem11  = int( rem10 / 10 )
+    match_value( int( dut.TEN_BIL.value ), val11, dut, cnt )
+
+    val12  = rem11 % 10
+    rem12  = int( rem11 / 10 )
+    match_value( int( dut.HUN_BIL.value ), val12, dut, cnt )
+
+
+MAX_VALUE  = 1000 * 1000 * 1000 * 1000
+LOG_INCR   =                100 * 1000
 
 @cocotb.test()
 async def test_my_design( dut ):
