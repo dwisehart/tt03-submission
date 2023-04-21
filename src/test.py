@@ -206,7 +206,7 @@ LOG_INCR   =                100 * 1000
 @cocotb.test()
 async def test_my_design( dut ):
     dut._log.info( "start" )
-    clock = Clock( dut.CLK, 10, units="ns" )
+    clock = Clock( dut.CLK, 35, units="us" )
     cocotb.start_soon( clock.start() )
 
     cnt = MAX_VALUE - RANGE / 2
