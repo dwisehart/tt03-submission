@@ -1,6 +1,27 @@
 `default_nettype none
 `timescale 1ns/1ps
 
+`ifdef GL_TEST
+
+////////////////////////////////////////
+  module tb
+  (
+   input [7:0]  io_in,
+   output [7:0] io_out
+  );
+
+   dwisehart_top m_top
+   (
+    .vccd1( 1'b1),
+    .vssd1( 1'b0),
+
+    .io_in  ({ SEL, RST, CLK }),
+    .io_out ( IO_OUT )
+   );
+
+`else
+
+////////////////////////////////////////
   module tb
   (
    input        CLK,
@@ -29,28 +50,24 @@
       #1;
    end
 
-    grey m_grey
-    (
-`ifdef GL_TEST
-     .vccd1( 1'b1),
-     .vssd1( 1'b0),
+   grey m_grey
+   (
+    .io_in  ({ SEL, RST, CLK }),
+    .init   ( INIT ),
+    .hunB   ( HUN_BIL ),
+    .tenB   ( TEN_BIL ),
+    .bil    ( BIL ),
+    .hunM   ( HUN_MIL ),
+    .tenM   ( TEN_MIL ),
+    .mil    ( MIL ),
+    .hunT   ( HUN_THOU ),
+    .tenT   ( TEN_THOU ),
+    .thou   ( THOU ),
+    .hund   ( HUND ),
+    .tens   ( TENS ),
+    .ones   ( ONES ),
+    .io_out ( IO_OUT )
+   );
 `endif
-
-     .io_in  ({ SEL, RST, CLK }),
-     .init   ( INIT ),
-     .hunB   ( HUN_BIL ),
-     .tenB   ( TEN_BIL ),
-     .bil    ( BIL ),
-     .hunM   ( HUN_MIL ),
-     .tenM   ( TEN_MIL ),
-     .mil    ( MIL ),
-     .hunT   ( HUN_THOU ),
-     .tenT   ( TEN_THOU ),
-     .thou   ( THOU ),
-     .hund   ( HUND ),
-     .tens   ( TENS ),
-     .ones   ( ONES ),
-     .io_out ( IO_OUT )
-    );
 
 endmodule
