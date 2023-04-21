@@ -10,7 +10,7 @@ ifneq ($(GATES),yes)
 
 # this is the only part you should need to modify:
 VERILOG_SOURCES += \
-	${PWD}/grey.v \
+	$(PWD)/grey.v \
 	$(PWD)/tb.v
 
 else
