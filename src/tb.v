@@ -1,7 +1,7 @@
 `default_nettype none
 `timescale 1ns/1ps
 
-`ifdef GL_TEST
+`ifdef GATES
 
 ////////////////////////////////////////
   module tb
