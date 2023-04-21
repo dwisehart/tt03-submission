@@ -31,6 +31,11 @@
 
     grey m_grey
     (
+`ifdef GL_TEST
+     .vccd1( 1'b1),
+     .vssd1( 1'b0),
+`endif
+
      .io_in  ({ SEL, RST, CLK }),
      .init   ( INIT ),
      .hunB   ( HUN_BIL ),
