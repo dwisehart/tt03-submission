@@ -23,9 +23,7 @@
 ////////////////////////////////////////
   module tb
   (
-   input        CLK,
-   input        RST,
-   input [5:0]  SEL,
+   input [7:0]  io_in,
    input [59:0] INIT,
 
    output [4:0] ONES,
@@ -51,7 +49,7 @@
 
    grey m_grey
    (
-    .io_in  ({ SEL, RST, CLK }),
+    .io_in  ( io_in ),
     .init   ( INIT ),
     .hunB   ( HUN_BIL ),
     .tenB   ( TEN_BIL ),
