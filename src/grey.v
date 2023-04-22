@@ -3,13 +3,15 @@
 
   module grey
   (
-   input [7:0]  io_in,
+   input        i_clk,
+   input        i_rst,
+   input [5:0]  i_sel,
    input [59:0] init,
    output [4:0] hunB, tenB, bil,
                 hunM, tenM, mil,
                 hunT, tenT, thou,
                 hund, tens, ones,
-   output [7:0] io_out
+   output [7:0] o_cnt
   );
 
    localparam pZERO        = 'b10001;
@@ -22,9 +24,6 @@
    localparam pSEVEN       = 'b01000;
    localparam pEIGHT       = 'b11000;
    localparam pNINE        = 'b10000;
-
-   wire       i_clk        = io_in[0];
-   wire       i_rst        = io_in[1];
 
 ////////////////////////////////////////
    reg [4:0]  r_ones, r_tens, r_hund, r_thou,
@@ -294,9 +293,8 @@
      end
 
 ////////////////////////////////////////
-   wire [5:0] i_sel         = io_in[7:2];
    reg [7:0]  r_out;
-   assign     io_out        = r_out;
+   assign     o_cnt        = r_out;
 
    always @( posedge i_clk )
      if( i_rst )

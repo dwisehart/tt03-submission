@@ -12,8 +12,8 @@
 
    dwisehart_top m_top
    (
-    .vccd1( 1'b1),
-    .vssd1( 1'b0),
+    .vccd1  ( 'b1 ),
+    .vssd1  ( 'b0 ),
     .io_in  ( io_in ),
     .io_out ( io_out )
    );
@@ -23,7 +23,9 @@
 ////////////////////////////////////////
   module tb
   (
-   input [7:0]  io_in,
+   input        CLK,
+   input        RST,
+   input [7:0]  SEL,
    input [59:0] INIT,
 
    output [4:0] ONES,
@@ -49,7 +51,9 @@
 
    grey m_grey
    (
-    .io_in  ( io_in ),
+    .i_clk  ( CLK ),
+    .i_rst  ( RST ),
+    .i_sel  ( SEL ),
     .init   ( INIT ),
     .hunB   ( HUN_BIL ),
     .tenB   ( TEN_BIL ),
@@ -63,7 +67,7 @@
     .hund   ( HUND ),
     .tens   ( TENS ),
     .ones   ( ONES ),
-    .io_out ( IO_OUT )
+    .o_cnt  ( IO_OUT )
    );
 `endif
 
