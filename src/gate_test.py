@@ -103,7 +103,7 @@ def bit_grey( cnt ) -> int:
 
 
 def test_grey_cnt( grey, cnt ):
-    bit_cnt = bit_grey( cnt ) & 0h3F
+    bit_cnt = bit_grey( cnt ) & 0x3F
     assert grey == bit_cnt, "%d %h %h" % ( cnt, bit_cnt, grey )
 
 RANGE      =                      100
