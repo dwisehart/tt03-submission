@@ -8,7 +8,7 @@
   (
    input        CLK,
    input        RST,
-   input [7:0]  SEL,
+   input [5:0]  SEL,
 
    output [7:0] io_out
   );

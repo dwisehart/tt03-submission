@@ -102,99 +102,11 @@ def bit_grey( cnt ) -> int:
             ret1 )
 
 
-def get_grey( dut ):
-    return ( str( dut.HUN_BIL.value ) + " " +
-             str( dut.TEN_BIL.value ) + " " +
-             str( dut.BIL.value ) + " " +
-             str( dut.HUN_MIL.value ) + " " +
-             str( dut.TEN_MIL.value ) + " " +
-             str( dut.MIL.value ) + " " +
-             str( dut.HUN_THOU.value ) + " " +
-             str( dut.TEN_THOU.value ) + " " +
-             str( dut.THOU.value ) + " " +
-             str( dut.HUND.value ) + " " +
-             str( dut.TENS.value ) + " " +
-             str( dut.ONES.value ) )
+def test_grey_cnt( grey, cnt ):
+    bit_cnt = bit_grey( cnt ) & 0h3F
+    assert grey == bit_cnt, "%d %h %h" % ( cnt, bit_cnt, grey )
 
-
-def match_value( bit_val, value, dut, cnt ):
-    if value == 0:
-        assert bit_val == ZERO, "%s %d" % ( get_grey( dut ), cnt )
-    elif value == 1:
-        assert bit_val == ONE, "%s %d" % ( get_grey( dut ), cnt )
-    elif value == 2:
-        assert bit_val == TWO, "%s %d" % ( get_grey( dut ), cnt )
-    elif value == 3:
-        assert bit_val == THREE, "%s %d" % ( get_grey( dut ), cnt )
-    elif value == 4:
-        assert bit_val == FOUR, "%s %d" % ( get_grey( dut ), cnt )
-    elif value == 5:
-        assert bit_val == FIVE, "%s %d" % ( get_grey( dut ), cnt )
-    elif value == 6:
-        assert bit_val == SIX, "%s %d" % ( get_grey( dut ), cnt )
-    elif value == 7:
-        assert bit_val == SEVEN, "%s %d" % ( get_grey( dut ), cnt )
-    elif value == 8:
-        assert bit_val == EIGHT, "%s %d" % ( get_grey( dut ), cnt )
-    elif value == 9:
-        assert bit_val == NINE, "%s %d" % ( get_grey( dut ), cnt )
-    else:
-        assert False, "%s %d" % ( get_grey( dut ), cnt )
-
-
-def test_grey_cnt( dut, cnt ):
-    val1  = cnt % 10
-    rem1  = int( cnt / 10 )
-    match_value( int( dut.ONES.value ), val1, dut, cnt )
-
-    val2  = rem1 % 10
-    rem2  = int( rem1 / 10 )
-    match_value( int( dut.TENS.value ), val2, dut, cnt )
-
-    val3  = rem2 % 10
-    rem3  = int( rem2 / 10 )
-    match_value( int( dut.HUND.value ), val3, dut, cnt )
-
-    val4  = rem3 % 10
-    rem4  = int( rem3 / 10 )
-    match_value( int( dut.THOU.value ), val4, dut, cnt )
-
-    val5  = rem4 % 10
-    rem5  = int( rem4 / 10 )
-    match_value( int( dut.TEN_THOU.value ), val5, dut, cnt )
-
-    val6  = rem5 % 10
-    rem6  = int( rem5 / 10 )
-    match_value( int( dut.HUN_THOU.value ), val6, dut, cnt )
-
-    val7  = rem6 % 10
-    rem7  = int( rem6 / 10 )
-    match_value( int( dut.MIL.value ), val7, dut, cnt )
-
-    val8  = rem7 % 10
-    rem8  = int( rem7 / 10 )
-    match_value( int( dut.TEN_MIL.value ), val8, dut, cnt )
-
-    val9  = rem8 % 10
-    rem9  = int( rem8 / 10 )
-    match_value( int( dut.HUN_MIL.value ), val9, dut, cnt )
-
-    val10  = rem9 % 10
-    rem10  = int( rem9 / 10 )
-    match_value( int( dut.BIL.value ), val10, dut, cnt )
-
-    val11  = rem10 % 10
-    rem11  = int( rem10 / 10 )
-    match_value( int( dut.TEN_BIL.value ), val11, dut, cnt )
-
-    val12  = rem11 % 10
-    rem12  = int( rem11 / 10 )
-    match_value( int( dut.HUN_BIL.value ), val12, dut, cnt )
-
-
-MAX_VALUE  = 1000 * 1000 * 1000 * 1000
-RANGE      =                      1000
-LOG_INCR   =                100 * 1000
+RANGE      =                      100
 
 @cocotb.test()
 async def test_my_design( dut ):
@@ -210,5 +122,5 @@ async def test_my_design( dut ):
     dut._log.info( "Checking %d counts from %d to %d", cnt, RANGE )
     for xx in range( RANGE ):
         await ClockCycles( dut.CLK, 1 )
-#        test_grey_cnt( dut, cnt )
-        cnt = ( cnt + 1 ) % MAX_VALUE
+        test_grey_cnt( dut.io_out[7:1], cnt )
+        cnt = cnt + 1
