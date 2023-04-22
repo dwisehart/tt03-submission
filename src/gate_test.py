@@ -122,5 +122,6 @@ async def test_my_design( dut ):
     dut._log.info( "Checking %d counts from %d to %d", cnt, RANGE )
     for xx in range( RANGE ):
         await ClockCycles( dut.CLK, 1 )
-        test_grey_cnt( dut.io_out[7:1], cnt )
+        grey = int( dut.io_out / 10 )
+        test_grey_cnt( grey, cnt )
         cnt = cnt + 1
