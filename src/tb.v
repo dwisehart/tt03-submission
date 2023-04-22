@@ -6,7 +6,10 @@
 ////////////////////////////////////////
   module tb
   (
-   input [7:0]  io_in,
+   input        CLK,
+   input        RST,
+   input [7:0]  SEL,
+
    output [7:0] io_out
   );
 
@@ -14,7 +17,7 @@
    (
     .vccd1  ( 1'b1 ),
     .vssd1  ( 1'b0 ),
-    .io_in  ( io_in ),
+    .io_in  ({ SEL, RST, CLK }),
     .io_out ( io_out )
    );
 
