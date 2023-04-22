@@ -198,20 +198,20 @@ LOG_INCR   =                100 * 1000
 
 @cocotb.test()
 async def test_my_design( dut ):
-    clk = dut.io_in[0]
-    rst = dut.io_in[1]
+#    clk = dut.io_in[0]
+#    rst = dut.io_in[1]
 
     dut._log.info( "start" )
-    clock = Clock( clk, 35, units="us" )
+    clock = Clock( dut.io_in[0], 35, units="us" )
     cocotb.start_soon( clock.start() )
 
-    rst.value = 1
-    await ClockCycles( clk, 10 )
-    rst.value = 0
+    dut.io_in[1].value = 1
+    await ClockCycles( dut.io_in[0], 10 )
+    dut.io_in[1].value = 0
 
     cnt = 0
     dut._log.info( "Checking %d counts from %d to %d", cnt, RANGE )
     for xx in range( RANGE ):
-        await ClockCycles( clk, 1 )
+        await ClockCycles( dut.io_in[0], 1 )
 #        test_grey_cnt( dut, cnt )
         cnt = ( cnt + 1 ) % MAX_VALUE

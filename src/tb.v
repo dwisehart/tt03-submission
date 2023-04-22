@@ -12,8 +12,8 @@
 
    dwisehart_top m_top
    (
-    .vccd1  ( 'b1 ),
-    .vssd1  ( 'b0 ),
+    .vccd1  ( 1'b1 ),
+    .vssd1  ( 1'b0 ),
     .io_in  ( io_in ),
     .io_out ( io_out )
    );
