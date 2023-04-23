@@ -106,7 +106,7 @@ def test_grey_cnt( grey, cnt ):
     bit_cnt = bit_grey( cnt ) & 0x7F
     assert grey == bit_cnt, "%d %s %s" % ( cnt, bin( bit_cnt ), bin( grey ) )
 
-RANGE  = 1000
+RANGE  = 10* 1000
 
 @cocotb.test()
 async def test_my_design( dut ):
@@ -114,23 +114,16 @@ async def test_my_design( dut ):
     clock = Clock( dut.CLK, 10, units="us" )
     cocotb.start_soon( clock.start() )
 
-    dut._log.info( "IO_OUT stage 1 %s", dut.IO_OUT )
-    dut.N_RST.value = 1
     dut.SEL.value = 0
-    await ClockCycles( dut.CLK, 10 )
-    dut._log.info( "IO_OUT stage 2 %s", dut.IO_OUT )
     dut.N_RST.value = 0
-    await ClockCycles( dut.CLK, 1 )
+    await ClockCycles( dut.CLK, 10 )
     dut.N_RST.value = 1
-    dut._log.info( "IO_OUT stage 3 %s", dut.IO_OUT )
 
     cnt = 0
     dut._log.info( "Checking %d counts starting at %d", RANGE, cnt )
     await ClockCycles( dut.CLK, 1 )
-    dut._log.info( "IO_OUT stage 4 %s", dut.IO_OUT )
     for xx in range( RANGE ):
         await ClockCycles( dut.CLK, 1 )
-        dut._log.info( "IO_OUT stage 5 %s", dut.IO_OUT )
 
         out = int( dut.IO_OUT )
         num = int( out / 2 )
