@@ -114,17 +114,22 @@ async def test_my_design( dut ):
     clock = Clock( dut.CLK, 35, units="us" )
     cocotb.start_soon( clock.start() )
 
+    dut._log.info( "IO_OUT stage 1 %s", dut.IO_OUT )
     dut.N_RST.value = 1
     await ClockCycles( dut.CLK, 10 )
+    dut._log.info( "IO_OUT stage 2 %s", dut.IO_OUT )
     dut.N_RST.value = 0
     await ClockCycles( dut.CLK, 1 )
     dut.N_RST.value = 1
+    dut._log.info( "IO_OUT stage 3 %s", dut.IO_OUT )
 
     cnt = 0
     dut._log.info( "Checking %d counts starting at %d", RANGE, cnt )
     await ClockCycles( dut.CLK, 1 )
+    dut._log.info( "IO_OUT stage 4 %s", dut.IO_OUT )
     for xx in range( RANGE ):
         await ClockCycles( dut.CLK, 1 )
+        dut._log.info( "IO_OUT stage 5 %s", dut.IO_OUT )
 
         out = int( dut.IO_OUT )
         num = int( out / 2 )
