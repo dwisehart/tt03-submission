@@ -7,7 +7,7 @@
   module tb
   (
    input        CLK,
-   input        RST,
+   input        N_RST,
    input [5:0]  SEL,
 
    output [7:0] IO_OUT
@@ -17,7 +17,7 @@
    (
     .vccd1  ( 1'b1 ),
     .vssd1  ( 1'b0 ),
-    .io_in  ({ SEL, RST, CLK }),
+    .io_in  ({ SEL, ~ N_RST, CLK }),
     .io_out ( IO_OUT )
    );
 
@@ -27,7 +27,7 @@
   module tb
   (
    input        CLK,
-   input        RST,
+   input        N_RST,
    input [7:0]  SEL,
    input [59:0] INIT,
 
@@ -55,7 +55,7 @@
    grey m_grey
    (
     .i_clk  ( CLK ),
-    .i_rst  ( RST ),
+    .i_rst  ( ~ N_RST ),
     .i_sel  ( SEL ),
     .init   ( INIT ),
     .hunB   ( HUN_BIL ),

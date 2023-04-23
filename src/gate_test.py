@@ -114,9 +114,11 @@ async def test_my_design( dut ):
     clock = Clock( dut.CLK, 35, units="us" )
     cocotb.start_soon( clock.start() )
 
-    dut.RST.value = 1
+    dut.N_RST.value = 1
     await ClockCycles( dut.CLK, 10 )
-    dut.RST.value = 0
+    dut.N_RST.value = 0
+    await ClockCycles( dut.CLK, 1 )
+    dut.N_RST.value = 1
 
     cnt = 0
     dut._log.info( "Checking %d counts starting at %d", RANGE, cnt )
@@ -131,3 +133,5 @@ async def test_my_design( dut ):
         test_grey_cnt( num, cnt )
         assert clk_half == cnt % 2, "%d" % ( cnt )
         cnt = cnt + 1
+
+    dut.N_RST.value = 0

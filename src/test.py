@@ -212,9 +212,11 @@ async def test_my_design( dut ):
     cnt = MAX_VALUE - RANGE / 2
     dut.INIT.value = bit_grey( cnt )
 
-    dut.RST.value = 1
+    dut.N_RST.value = 1
     await ClockCycles( dut.CLK, 10 )
-    dut.RST.value = 0
+    dut.N_RST.value = 0
+    await ClockCycles( dut.CLK, 1 )
+    dut.N_RST.value = 1
 
     dut._log.info( "Checking %d counts from %d to %d", RANGE, cnt, ( cnt + RANGE ) % MAX_VALUE )
     next_log = ( cnt + LOG_INCR ) % MAX_VALUE
@@ -225,3 +227,5 @@ async def test_my_design( dut ):
         if cnt == next_log:
             dut._log.info( "Count up to %d", cnt )
             next_log = ( cnt + LOG_INCR ) % MAX_VALUE
+
+    dut.N_RST.value = 0
