@@ -103,10 +103,10 @@ def bit_grey( cnt ) -> int:
 
 
 def test_grey_cnt( grey, cnt ):
-    bit_cnt = bit_grey( cnt ) & 0x3F
-    assert grey == bit_cnt, "%d %h %h" % ( cnt, bit_cnt, grey )
+    bit_cnt = bit_grey( cnt ) & 0x7F
+    assert grey == bit_cnt, "%d %s %s" % ( cnt, bin( bit_cnt ), bin( grey ) )
 
-RANGE      =                      100
+RANGE  = 1000
 
 @cocotb.test()
 async def test_my_design( dut ):
@@ -119,11 +119,15 @@ async def test_my_design( dut ):
     dut.RST.value = 0
 
     cnt = 0
-    dut._log.info( "Checking %d counts from %d to %d", cnt, RANGE )
+    dut._log.info( "Checking %d counts starting at %d", RANGE, cnt )
+    await ClockCycles( dut.CLK, 1 )
     for xx in range( RANGE ):
         await ClockCycles( dut.CLK, 1 )
-        grey = int( int( dut.io_out ) / 2 )
-        test_grey_cnt( grey, cnt )
-        clk_half = int( dut.io_out ) % 2
+
+        out = int( dut.IO_OUT )
+        num = int( out / 2 )
+        clk_half = out % 2
+
+        test_grey_cnt( num, cnt )
         assert clk_half == cnt % 2, "%d" % ( cnt )
         cnt = cnt + 1

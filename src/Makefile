@@ -21,6 +21,7 @@ else
   VERILOG_SOURCES += $(PWD)/grey.v
   TOPLEVEL         = tb
   MODULE           = test
+#  MODULE           = gate_test
 
 endif
 

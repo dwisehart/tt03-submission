@@ -10,7 +10,7 @@
    input        RST,
    input [5:0]  SEL,
 
-   output [7:0] io_out
+   output [7:0] IO_OUT
   );
 
    dwisehart_top m_top
@@ -18,7 +18,7 @@
     .vccd1  ( 1'b1 ),
     .vssd1  ( 1'b0 ),
     .io_in  ({ SEL, RST, CLK }),
-    .io_out ( io_out )
+    .io_out ( IO_OUT )
    );
 
 `else
@@ -72,6 +72,7 @@
     .ones   ( ONES ),
     .o_cnt  ( IO_OUT )
    );
+
 `endif
 
 endmodule
