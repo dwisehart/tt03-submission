@@ -111,11 +111,12 @@ RANGE  = 1000
 @cocotb.test()
 async def test_my_design( dut ):
     dut._log.info( "start" )
-    clock = Clock( dut.CLK, 100, units="us" )
+    clock = Clock( dut.CLK, 10, units="us" )
     cocotb.start_soon( clock.start() )
 
     dut._log.info( "IO_OUT stage 1 %s", dut.IO_OUT )
     dut.N_RST.value = 1
+    dut.SEL.value = 0
     await ClockCycles( dut.CLK, 10 )
     dut._log.info( "IO_OUT stage 2 %s", dut.IO_OUT )
     dut.N_RST.value = 0
